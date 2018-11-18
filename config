@@ -45,14 +45,15 @@ font-0 = mono:pixelsize=10;1
 font-1 = FontAwesome5Free:pixelsize=13;2
 font-2 = FontAwesome5Brands:pixelsize=13;2
 font-3 = FontAwesome5FreeSolid:pixelsize=13;2
+font-4 = WeatherIcons:size=12;1
 ;font-2 = siji:pixelsize=10;1
 ;font-3 = "Tamsyn:pixelsize=12;0"
 ;font-4 = "Roboto:size=11:weight=bold;2"
 ;font-5 = "Noto Sans:size=11;1"
 
-modules-left = i3 xbacklight eth wlan
+modules-left =  mytext menu-apps
 modules-center = xwindow xbacklight 
-modules-right = volume memory cpu temperature filesystem xkeyboard network date 
+modules-right =  openweathermap-simple memory cpu temperature filesystem xkeyboard network alsa date 
 ;separator = "|"
 
 tray-detached = true
@@ -83,7 +84,7 @@ label = %title:0:30:...%
 type = internal/xkeyboard
 blacklist-0 = num lock
 
-format-prefix = " "
+format-prefix = ""
 format-prefix-foreground = ${colors.foreground-alt}
 format-prefix-underline = ${colors.secondary}
 
@@ -93,6 +94,88 @@ label-layout-underline = ${colors.secondary}
 label-indicator-padding = 2
 label-indicator-margin = 1
 label-indicator-background = ${colors.secondary}
+
+
+
+
+;chmod +x ~/.config/polybar/script.sh
+[module/openweathermap-simple]
+type = custom/script
+exec = /home/smile/.config/polybar/openweathermap-simple.sh
+interval = 600
+lable-font=4
+
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+
+format-spacing = 1
+
+label-open = 
+label-open-foreground = ${colors.secondary}
+label-close =  cancel
+label-close-foreground = ${colors.secondary}
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+
+menu-0-0 = reboot
+menu-0-0-exec = menu-open-1
+menu-0-1 = power off
+menu-0-1-exec = menu-open-2
+
+menu-1-0 = cancel
+menu-1-0-exec = menu-open-0
+menu-1-1 = reboot
+menu-1-1-exec = sudo reboot
+
+menu-2-0 = power off
+menu-2-0-exec = sudo poweroff
+menu-2-1 = cancel
+menu-2-1-exec = menu-open-0
+
+
+
+
+
+
+
+
+[module/alsa]
+type = internal/alsa
+
+format-volume = <label-volume> <bar-volume>
+label-volume = VOL
+label-volume-foreground = ${root.foreground}
+
+format-muted-prefix = 
+format-muted-foreground = ${colors.foreground-alt}
+label-muted = sound muted
+
+bar-volume-width = 7
+bar-volume-foreground-0 = ${xrdb:color2:#55aa55}
+bar-volume-foreground-1 = ${xrdb:color2:#55aa55}
+bar-volume-foreground-2 = ${xrdb:color2:#55aa55}
+bar-volume-foreground-3 = ${xrdb:color10:#55aa55}
+bar-volume-foreground-4 = ${xrdb:color10:#55aa55}
+bar-volume-foreground-5 = ${xrdb:color10:#f5a70a}
+bar-volume-foreground-6 = ${xrdb:color10:#ff5555}
+bar-volume-foreground-7 = ${xrdb:color10:#ff5555}
+bar-volume-foreground-8 = ${xrdb:color9:#ff5555}
+bar-volume-foreground-9 = ${xrdb:color9:#ff5555}
+bar-volume-gradient = false
+bar-volume-indicator = |
+;bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground-alt}
+
+
+
+
 
 
 [module/filesystem]
@@ -222,7 +305,7 @@ type = internal/memory
 interval = 2
 format =  <bar-used><label>
 format-underline=#f5a70a
-label = " %gb_total%" 
+label = " %gb_used%" 
 bar-used-indicator =
 bar-used-indicator-foreground= #f5a70a
 bar-used-width = 10
@@ -248,6 +331,7 @@ format-prefix-foreground = ${self.format-underline}
 type = internal/network
 interface = wlxc46e1f1bfadd
 interval = 2.5
+ping-interval=2
 accumulate-stats = true
 
 format-connected = <ramp-signal> <label-connected>
@@ -294,17 +378,17 @@ format =<label>
 date = 
 
 ; Optional time format
-time = %H:%M
+time =%H:%M
 
 ; if `date-alt` or `time-alt` is defined, clicking
 ; the module will toggle between formats
 date-alt = %A, %d %B %Y
 time-alt = %H:%M:%S
 label = %date% %time%
-;format-background = #55ff3399
-;format-foreground = #fff
+;format-background = #55ff33
+format-foreground = #fff
 ;label-font = 3
-;label-foreground = #9A32DB
+label-foreground = #9A32DB
 
 
 
@@ -347,6 +431,14 @@ interval = 1
 click-left = cmus-remote --pause
 click-right = cmus-remote --stop\
 
+[module/ping]
+type = custom/script
+interval = 1 
+exec = ping -c 1 google.com
+;exec-if = pgrep -x cmus
+
+click-left = cmus-remote --pause
+click-right = cmus-remote --stop\
 
 
 
@@ -383,8 +475,8 @@ animation-charging-framerate = 750
 [module/temperature]
 type = internal/temperature
 thermal-zone = 0
-warn-temperature = 60
-
+warn-temperature = 75
+hwmon-path = /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon0/temp1_input
 format = <ramp> <label>
 format-underline =  #456771
 format-warn = <ramp> <label-warn>
@@ -394,43 +486,24 @@ label = %temperature%
 label-warn = %temperature%
 label-warn-foreground = ${colors.secondary}
 
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
+ramp-0 = 
+ramp-0-foreground=#85FFF1
+ramp-1 = 
+ramp-1-foreground=#ECE161
+ramp-2 = 
+ramp-2-foreground=#FF4010
 ramp-foreground = ${colors.foreground-alt}
 
-format-prefix = " "
-format-prefix-foreground = #666
+;format-prefix = " "
+;format-prefix-foreground = #666
 
 
+[module/mytext]
+type = custom/text
+content = insrchofsnrs
+click-left = firefox
 
 
-[module/powermenu]
-type = custom/menu
-
-format-spacing = 1
-
-label-open = 
-label-open-foreground = ${colors.secondary}
-label-close =  cancel
-label-close-foreground = ${colors.secondary}
-label-separator = |
-label-separator-foreground = ${colors.foreground-alt}
-
-menu-0-0 = reboot
-menu-0-0-exec = menu-open-1
-menu-0-1 = power off
-menu-0-1-exec = menu-open-2
-
-menu-1-0 = cancel
-menu-1-0-exec = menu-open-0
-menu-1-1 = reboot
-menu-1-1-exec = sudo reboot
-
-menu-2-0 = power off
-menu-2-0-exec = sudo poweroff
-menu-2-1 = cancel
-menu-2-1-exec = menu-open-0
 
 
 
@@ -458,7 +531,7 @@ format-prefix = " "
 format-prefix-foreground = #F50
 
 [global/wm]
-margin-top = 5
-margin-bottom = 5
+margin-top = 2
+margin-bottom = 1
 
 ; vim:ft=dosini
