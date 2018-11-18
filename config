@@ -8,14 +8,14 @@
 ;=====================================================
 
 [colors]
-background = ${xrdb:color0:#222}
+background = #2D2D2D
 ;background = #444
 background-alt = #444
 ;foreground = ${xrdb:color7:#E3C79CFF}
 foreground =#EEE29C
 foreground-alt = #F76706
 primary =  #DF11DF
-secondary = #F10DF8
+secondary = #F870A6
 alert = #bd2c40
 
 [bar/example]
@@ -42,10 +42,11 @@ module-margin-left = 1
 module-margin-right = 1
 
 font-0 = mono:pixelsize=10;1
-font-1 = FontAwesome5Free:pixelsize=13;2
-font-2 = FontAwesome5Brands:pixelsize=13;2
-font-3 = FontAwesome5FreeSolid:pixelsize=13;2
-font-4 = WeatherIcons:size=12;1
+font-1 = weathericons:size=13;1
+font-2 = FontAwesome5Free:pixelsize=13;2
+font-3 = FontAwesome5Brands:pixelsize=13;2
+font-4 = FontAwesome5FreeSolid:pixelsize=13;2
+;font-4 = weathericons:size=13;1
 ;font-2 = siji:pixelsize=10;1
 ;font-3 = "Tamsyn:pixelsize=12;0"
 ;font-4 = "Roboto:size=11:weight=bold;2"
@@ -77,7 +78,7 @@ scroll-down = i3wm-wsprev
 
 [module/xwindow]
 type = internal/xwindow
-label = %title:0:30:...%
+label = %title:0:50:...%
 
 
 [module/xkeyboard]
@@ -90,10 +91,10 @@ format-prefix-underline = ${colors.secondary}
 
 label-layout = %layout%
 label-layout-underline = ${colors.secondary}
-
+;label-layout-background=${colors.secondary}
 label-indicator-padding = 2
 label-indicator-margin = 1
-label-indicator-background = ${colors.secondary}
+;label-indicator-background = ${colors.secondary}
 
 
 
@@ -103,7 +104,7 @@ label-indicator-background = ${colors.secondary}
 type = custom/script
 exec = /home/smile/.config/polybar/openweathermap-simple.sh
 interval = 600
-lable-font=4
+format-underline = #66E6FF
 
 
 [module/powermenu]
@@ -185,8 +186,12 @@ mount-0 = /
 
 interval = 25
 ;spacing = 10
-label-mounted = %{F#F76706} %{F-}%free%
 
+format-mounted-prefix-font = 3
+format-mounted-prefix =" " 
+format-mounted-prefix-foreground= #F76706 
+label-mounted = %free%
+format-mounted-prefix-underline = #F76706
 
 label-mounted-underline =  #F76706
 
@@ -348,16 +353,22 @@ format-packetloss = <animation-packetloss> <label-connected>
 
 ramp-signal-0 = 
 ramp-signal-0-foreground = #ff5555
+ramp-signal-0-underline = #ff5555
 ramp-signal-1 = 
 ramp-signal-1-foreground = #ff5555
+ramp-signal-1-underline = #ff5555
 ramp-signal-2 = 
 ramp-signal-2-foreground = #f5a70a
+ramp-signal-2-underline = #f5a70a
 ramp-signal-3 = 
 ramp-signal-3-foreground = #557755
+ramp-signal-3-underline = #557755
 ramp-signal-4 = 
 ramp-signal-4-foreground = #55aa55
+ramp-signal-4-underline = #55aa55
 ramp-signal-5 = 
 ramp-signal-5-foreground = #55aa55
+ramp-signal-5-underline = #55aa55
 ;ramp-signal-foreground = #eefafafa
 
 
@@ -386,9 +397,9 @@ date-alt = %A, %d %B %Y
 time-alt = %H:%M:%S
 label = %date% %time%
 ;format-background = #55ff33
-format-foreground = #fff
+;format-foreground = #fff
 ;label-font = 3
-label-foreground = #9A32DB
+;label-foreground = #7EDEE8
 
 
 
