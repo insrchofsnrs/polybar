@@ -1,0 +1,464 @@
+;=====================================================
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/jaagr/polybar
+;
+;   The README contains alot of information
+;
+;=====================================================
+
+[colors]
+background = ${xrdb:color0:#222}
+;background = #444
+background-alt = #444
+;foreground = ${xrdb:color7:#E3C79CFF}
+foreground =#EEE29C
+foreground-alt = #F76706
+primary =  #DF11DF
+secondary = #F10DF8
+alert = #bd2c40
+
+[bar/example]
+monitor = ${env:MONITOR:HDMI-0}
+width = 100%
+height = 30
+;offset-x = 1%
+;offset-y = 1%
+radius = 2.0
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size =2
+line-color = #f00
+
+border-size = 2
+border-color = ;${colors.secondary}
+padding-left = 
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 1
+
+font-0 = mono:pixelsize=10;1
+font-1 = FontAwesome5Free:pixelsize=13;2
+font-2 = FontAwesome5Brands:pixelsize=13;2
+font-3 = FontAwesome5FreeSolid:pixelsize=13;2
+;font-2 = siji:pixelsize=10;1
+;font-3 = "Tamsyn:pixelsize=12;0"
+;font-4 = "Roboto:size=11:weight=bold;2"
+;font-5 = "Noto Sans:size=11;1"
+
+modules-left = i3 xbacklight eth wlan
+modules-center = xwindow xbacklight 
+modules-right = volume memory cpu temperature filesystem xkeyboard network date 
+;separator = "|"
+
+tray-detached = true
+tray-position = right
+tray-padding = 4
+tray-maxsize = 16
+tray-transparent = true
+tray-background = #0063ff
+;wm-restack = bspwm
+;wm-restack = i3
+
+;override-redirect = true
+
+;scroll-up = bspwm-desknext
+;scroll-down = bspwm-deskprev
+
+scroll-up = i3wm-wsnext
+scroll-down = i3wm-wsprev
+
+
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:30:...%
+
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-underline = ${colors.secondary}
+
+label-layout = %layout%
+label-layout-underline = ${colors.secondary}
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.secondary}
+
+
+[module/filesystem]
+type = internal/fs
+
+mount-0 = /
+
+interval = 25
+;spacing = 10
+label-mounted = %{F#F76706} %{F-}%free%
+
+
+label-mounted-underline =  #F76706
+
+
+
+
+[module/bspwm]
+type = internal/bspwm
+
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 2
+
+label-occupied = %index%
+label-occupied-padding = 2
+
+label-urgent = %index%!
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+label-empty = %index%
+label-empty-foreground = ${colors.foreground-alt}
+label-empty-padding = 2
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+; Only show workspaces on the same output as the bar
+;pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+label-focused = %index%
+label-focused-background = ${module/bspwm.label-focused-background}
+label-focused-underline = ${module/bspwm.label-focused-underline}
+label-focused-padding = ${module/bspwm.label-focused-padding}
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index%
+label-unfocused-padding = ${module/bspwm.label-occupied-padding}
+
+; visible = Active workspace on unfocused monitor
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index%
+label-urgent-background = ${module/bspwm.label-urgent-background}
+label-urgent-padding = ${module/bspwm.label-urgent-padding}
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
+
+label-song-maxlen = 25
+label-song-ellipsis = true
+
+
+
+
+
+
+[module/cpu]
+type = internal/cpu
+interval = 1
+format-prefix = " "
+format-prefix-foreground = #bd2c40
+format-underline =  #bd2c40
+label = %percentage%%
+format = <bar-load>
+bar-load-indicator =
+bar-load-indicator-foreground= #f5a70a
+bar-load-width = 10
+bar-load-foreground-0 = #55aa55
+bar-load-foreground-1 = #557755
+bar-load-foreground-2 = #f5a70a
+bar-load-foreground-3 = #ff5555
+bar-load-fill =▐
+bar-load-empty = ▐
+bar-load-empty-foreground = #444444
+;ramp-coreload-spacing = 1
+;ramp-coreload-0 = ▁
+;ramp-coreload-0-foreground =  #bd2c40
+;ramp-coreload-1 = ▂
+;ramp-coreload-1-foreground =  #bd2c40
+;ramp-coreload-2 = ▃
+;ramp-coreload-2-foreground =  #bd2c40
+;ramp-coreload-3 = ▄
+;ramp-coreload-3-foreground =  #bd2c40
+;ramp-coreload-4 = ▅
+;ramp-coreload-4-foreground =  #FFAA7F
+;ramp-coreload-5 = ▆
+;ramp-coreload-5-foreground =  #FFAA7F
+;ramp-coreload-6 = ▇
+;ramp-coreload-6-foreground =  #FFAA7F
+;ramp-coreload-7 = █
+;ramp-coreload-7-foreground =  #FFAA7F
+
+[module/memory]
+type = internal/memory
+interval = 2
+format =  <bar-used><label>
+format-underline=#f5a70a
+label = " %gb_total%" 
+bar-used-indicator =
+bar-used-indicator-foreground= #f5a70a
+bar-used-width = 10
+bar-used-foreground-0 = #55aa55
+bar-used-foreground-1 = #557755
+bar-used-foreground-2 = #f5a70a
+bar-used-foreground-3 = #ff5555
+bar-used-fill =▐
+bar-used-empty = ▐
+bar-used-empty-foreground = #444444
+
+
+
+format-prefix = " "
+format-prefix-foreground = ${self.format-underline}
+;format-underline =  #456771
+;label = %percentage_used%%
+
+
+
+
+[module/network]
+type = internal/network
+interface = wlxc46e1f1bfadd
+interval = 2.5
+accumulate-stats = true
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-underline =  #456771
+label-connected = %downspeed:8%
+
+label-connected-foreground = #eefafafa
+
+format-disconnected = <label-disconnected>
+format-disconnected-underline = #EC3312FF
+label-disconnected = not connected
+label-disconnected-foreground = #66ffffff
+format-packetloss = <animation-packetloss> <label-connected>
+
+ramp-signal-0 = 
+ramp-signal-0-foreground = #ff5555
+ramp-signal-1 = 
+ramp-signal-1-foreground = #ff5555
+ramp-signal-2 = 
+ramp-signal-2-foreground = #f5a70a
+ramp-signal-3 = 
+ramp-signal-3-foreground = #557755
+ramp-signal-4 = 
+ramp-signal-4-foreground = #55aa55
+ramp-signal-5 = 
+ramp-signal-5-foreground = #55aa55
+;ramp-signal-foreground = #eefafafa
+
+
+; Only applies if <animation-packetloss> is used
+animation-packetloss-0 = ⚠
+animation-packetloss-0-foreground = #ffa64c
+animation-packetloss-1 = 📶
+animation-packetloss-1-foreground = #000000
+; Framerate in milliseconds
+animation-packetloss-framerate = 500
+
+
+[module/date]
+type = internal/date
+interval =1
+format =<label>
+
+date = 
+
+; Optional time format
+time = %H:%M
+
+; if `date-alt` or `time-alt` is defined, clicking
+; the module will toggle between formats
+date-alt = %A, %d %B %Y
+time-alt = %H:%M:%S
+label = %date% %time%
+;format-background = #55ff3399
+;format-foreground = #fff
+;label-font = 3
+;label-foreground = #9A32DB
+
+
+
+
+[module/volume]
+type = internal/volume
+
+format-volume = <label-volume> <bar-volume>
+label-volume = VOL 
+label-volume-foreground = ${root.foreground}
+
+format-muted-prefix = " "
+format-muted-foreground = ${colors.foreground-alt}
+label-muted = MUTED 
+
+bar-volume-width = 8
+bar-volume-foreground-0 = #00007F
+bar-volume-foreground-1 = #456771
+bar-volume-foreground-2 = #456771
+bar-volume-foreground-3 = #456771
+bar-volume-foreground-4 = #456771
+bar-volume-foreground-5 = #456771
+bar-volume-foreground-6 = #456771
+bar-volume-gradient = true
+bar-volume-indicator = ●
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground-alt}
+
+[module/cmus]
+type = custom/script
+
+exec = sh ~/.config/polybar/cmus.sh
+exec-if = pgrep -x cmus
+interval = 1
+
+click-left = cmus-remote --pause
+click-right = cmus-remote --stop\
+
+
+
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 98
+
+format-charging = <animation-charging> <label-charging>
+format-charging-underline =  #456771
+
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-underline = ${self.format-charging-underline}
+
+format-full-prefix = " "
+format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-underline = ${self.format-charging-underline}
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-foreground = ${colors.foreground-alt}
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-framerate = 750
+
+
+
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+
+format = <ramp> <label>
+format-underline =  #456771
+format-warn = <ramp> <label-warn>
+format-warn-underline = ${self.format-underline}
+
+label = %temperature%
+label-warn = %temperature%
+label-warn-foreground = ${colors.secondary}
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-foreground = ${colors.foreground-alt}
+
+format-prefix = " "
+format-prefix-foreground = #666
+
+
+
+
+[module/powermenu]
+type = custom/menu
+
+format-spacing = 1
+
+label-open = 
+label-open-foreground = ${colors.secondary}
+label-close =  cancel
+label-close-foreground = ${colors.secondary}
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+
+menu-0-0 = reboot
+menu-0-0-exec = menu-open-1
+menu-0-1 = power off
+menu-0-1-exec = menu-open-2
+
+menu-1-0 = cancel
+menu-1-0-exec = menu-open-0
+menu-1-1 = reboot
+menu-1-1-exec = sudo reboot
+
+menu-2-0 = power off
+menu-2-0-exec = sudo poweroff
+menu-2-1 = cancel
+menu-2-1-exec = menu-open-0
+
+
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+
+[module/kernel-version]
+type = custom/script
+exec = uname -r
+interval = 1024
+format-underline =  #456771
+format-prefix = " "
+format-prefix-foreground = #666
+
+[module/time]
+type = custom/script
+exec = date
+interval = 1
+format-underline =  #456771
+format-prefix = " "
+format-prefix-foreground = #F50
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+; vim:ft=dosini
